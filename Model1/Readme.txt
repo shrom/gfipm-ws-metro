@@ -131,6 +131,7 @@ Application Server Setup
 
     Now Glassfish web-based GUI will be available via:
     https://yourhost:4848/common/index.jsf
+        (GUI User Name: "asadmin"; GUI Password: "adminadmin" )
 
     Open Glassfish domain (domain1) configuration file:
     >vi glassfish/domains/domain1/config/domain.xml
@@ -225,6 +226,7 @@ References
 5. https://blogs.oracle.com/trustjdg/entry/handling_token_and_key_requirements2
 6. https://blogs.oracle.com/trustjdg/entry/handling_claims_with_sts
 7. http://metro.java.net/guide/Handling_Token_and_Key_Requirements_at_Run_Time.html
+8. IPTables https://help.ubuntu.com/community/IptablesHowTo
 
 Sample VM settings
     User Accounts (user name / password )
