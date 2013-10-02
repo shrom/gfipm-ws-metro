@@ -148,6 +148,7 @@ Application Server Setup
 
     Now Glassfish web-based GUI will be available via:
     https://yourhost:4848/common/index.jsf
+        (GUI User Name: "asadmin"; GUI Password: "adminadmin" )
 
     Open Glassfish domain (domain1) configuration file:
     >vi glassfish/domains/domain1/config/domain.xml
