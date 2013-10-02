@@ -21,6 +21,7 @@ package gov.niem.ws.sample.cvc.service;
 import gov.niem.ws.sample.cvc.jaxb.iepd.CommercialVehicleCollisionDocumentType;
 import gov.niem.ws.sample.cvc.jaxb.msg.*;
 import gov.niem.ws.sample.cvc.jaxws.CommercialVehicleCollisionPortType;
+import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -56,14 +57,16 @@ public class CommercialVehicleCollisionWebServiceImpl implements CommercialVehic
     WebServiceContext wsContext;
 
     @Override
-    public GetDocumentResponseType getDocument(GetDocumentRequestType parameters) {
+    public CommercialVehicleCollisionDocumentType getDocumentRequest(String documentFileControlID) {
+//    public GetDocumentResponseType getDocument(GetDocumentRequestType parameters) {
         
         String currentMethodName = GFIPMAuthorizationProvider.getCurrentMethodName();
         if( ! GFIPMAuthorizationProvider.isServiceAuthorized(currentMethodName, wsContext) ){
             throw new RuntimeException("WSC is not authorized to invoke " + currentMethodName + " method");
         }        
 
-        String documentFileControlIDString = parameters.getDocumentFileControlID().getValue();
+        //String documentFileControlIDString = parameters.getDocumentFileControlID().getValue();
+        String documentFileControlIDString = documentFileControlID;
         GetDocumentResponseType getDocumentResponse = msgOF.createGetDocumentResponseType();
         CommercialVehicleCollisionDocumentType commercialVehicleCollisionDocument = iepdOF.createCommercialVehicleCollisionDocumentType();
         commercialVehicleCollisionDocument.setDocumentFileControlID(iepdOF.createDocumentFileControlID(documentFileControlIDString));
@@ -80,32 +83,49 @@ public class CommercialVehicleCollisionWebServiceImpl implements CommercialVehic
             Logger.getLogger(CommercialVehicleCollisionWebServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return getDocumentResponse;
+//        return getDocumentResponse;
+        return getDocumentResponse.getCommercialVehicleCollisionDocument().getValue();
     }
 
     @Override
-    public UploadPhotoResponseType uploadPhoto(UploadPhotoRequestType parameters) {
+    public String uploadPhotoRequest(Image photo) {
+//    public UploadPhotoResponseType uploadPhoto(UploadPhotoRequestType parameters) {
 
-        if ((parameters.getPhoto() != null) && (parameters.getPhoto().getValue() != null)) {
-            java.awt.Image data = parameters.getPhoto().getValue();
+            java.awt.Image data = photo;
             UploadPhotoResponseType uploadPhotoResponse = msgOF.createUploadPhotoResponseType();
             uploadPhotoResponse.setPhotoControlID(iepdOF.createPhotoControlID("Received image size is (width, height)  :  (" + data.getWidth(null) + ":" + data.getHeight(null)+")\n" + "Assigned image id is: " + imageCounter ));
             imageCounter++;
-            return uploadPhotoResponse;
-        } else {
-            throw new WebServiceException("No image Received!");
-        }
+            return uploadPhotoResponse.getPhotoControlID().getValue();
+        
+//        if ((parameters.getPhoto() != null) && (parameters.getPhoto().getValue() != null)) {
+//            java.awt.Image data = parameters.getPhoto().getValue();
+//            UploadPhotoResponseType uploadPhotoResponse = msgOF.createUploadPhotoResponseType();
+//            uploadPhotoResponse.setPhotoControlID(iepdOF.createPhotoControlID("Received image size is (width, height)  :  (" + data.getWidth(null) + ":" + data.getHeight(null)+")\n" + "Assigned image id is: " + imageCounter ));
+//            imageCounter++;
+//            return uploadPhotoResponse;
+//        } else {
+//            throw new WebServiceException("No image Received!");
+//        }
 
     }
 
     @Override
-    public DownloadDataResponseType downloadData(DownloadDataRequestType parameters) {
-        int size = parameters.getSize().getValue().intValue();
+    public DataHandler downloadDataRequest(Integer size) {    
+//    public DownloadDataResponseType downloadData(DownloadDataRequestType parameters) {
+
         DownloadDataResponseType downloadDataResponseType = msgOF.createDownloadDataResponseType();
         DataHandler dataHandler = getDataHandler(size);
         JAXBElement<DataHandler> dataHandlerJAXBElement = iepdOF.createData(dataHandler);
         downloadDataResponseType.setData(dataHandlerJAXBElement);
-        return downloadDataResponseType;
+        return downloadDataResponseType.getData().getValue();
+
+//        int size = parameters.getSize().getValue().intValue();
+//        DownloadDataResponseType downloadDataResponseType = msgOF.createDownloadDataResponseType();
+//        DataHandler dataHandler = getDataHandler(size);
+//        JAXBElement<DataHandler> dataHandlerJAXBElement = iepdOF.createData(dataHandler);
+//        downloadDataResponseType.setData(dataHandlerJAXBElement);
+//        return downloadDataResponseType;
+        
     }
 
     /**
