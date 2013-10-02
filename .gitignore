@@ -1,0 +1,9 @@
+/wscontract/target/
+Model1/m1wsc/target/
+Model1/m1wsp/target/
+Model2/m2client/target/
+Model2/m2lib/target/
+Model2/m2sts/target/
+Model2/m2wsc/target/
+Model2/m2wsp/target/
+trust-fabric/target/
