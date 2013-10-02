@@ -19,6 +19,7 @@
 package gov.niem.ws.sample.cvc.client;
 
 import com.sun.xml.ws.developer.StreamingDataHandler;
+import gov.niem.ws.sample.cvc.jaxb.iepd.CommercialVehicleCollisionDocumentType;
 import gov.niem.ws.sample.cvc.jaxb.msg.*;
 import gov.niem.ws.sample.cvc.jaxws.CommercialVehicleCollisionPortType;
 import gov.niem.ws.sample.cvc.jaxws.CommercialVehicleCollisionWebService;
@@ -89,8 +90,10 @@ public class CommercialVehicleCollisionClient {
         GetDocumentRequestType getDocumentRequestType = msgOF.createGetDocumentRequestType();
         JAXBElement<String> documentFileControlID = iepdOF.createDocumentFileControlID("abcd");
         getDocumentRequestType.setDocumentFileControlID(documentFileControlID);
-        GetDocumentResponseType getDocumentResponseType = cvcPort.getDocument(getDocumentRequestType);
-        System.out.println("Incident text " + getDocumentResponseType.getCommercialVehicleCollisionDocument().getValue().getIncidentText().getValue());
+//        GetDocumentResponseType getDocumentResponseType = cvcPort.getDocument(getDocumentRequestType);
+        CommercialVehicleCollisionDocumentType cvcDocument = cvcPort.getDocumentRequest(getDocumentRequestType.getDocumentFileControlID().getValue());
+//        System.out.println("Incident text " + getDocumentResponseType.getCommercialVehicleCollisionDocument().getValue().getIncidentText().getValue());
+        System.out.println("Incident text " + cvcDocument.getIncidentText().getValue());
         System.out.println("Done requesting the document. \n");
 
 
@@ -98,16 +101,19 @@ public class CommercialVehicleCollisionClient {
         UploadPhotoRequestType uploadPhotoRequestType = msgOF.createUploadPhotoRequestType();
         JAXBElement<Image> photo = iepdOF.createPhoto(getImage("java.jpg"));
         uploadPhotoRequestType.setPhoto(photo);
-        UploadPhotoResponseType uploadPhotoResponseType = cvcPort.uploadPhoto(uploadPhotoRequestType);
-        System.out.println("Done uploading image. \n" + uploadPhotoResponseType.getPhotoControlID().getValue());
+//        UploadPhotoResponseType uploadPhotoResponseType = cvcPort.uploadPhoto(uploadPhotoRequestType);
+        String photoControlIDString = cvcPort.uploadPhotoRequest(uploadPhotoRequestType.getPhoto().getValue());
+//        System.out.println("Done uploading image. \n" + uploadPhotoResponseType.getPhotoControlID().getValue());
+        System.out.println("Done uploading image. \n" + photoControlIDString);
 
         //donload 1Mb
         int size = 1000000;//1MB
         DownloadDataRequestType downloadDataRequestType = msgOF.createDownloadDataRequestType();
         JAXBElement<Integer> sizeJAXBElement = iepdOF.createSize(new Integer(size));
         downloadDataRequestType.setSize(sizeJAXBElement);
-        DownloadDataResponseType downloadDataResponseType = cvcPort.downloadData(downloadDataRequestType);
-        DataHandler dh = downloadDataResponseType.getData().getValue();
+//        DownloadDataResponseType downloadDataResponseType = cvcPort.downloadData(downloadDataRequestType);
+//        DataHandler dh = downloadDataResponseType.getData().getValue();
+        DataHandler dh = cvcPort.downloadDataRequest(downloadDataRequestType.getSize().getValue());
         validateDataHandler(size, dh);
         System.out.println("Done downloading data. \n");
 
