@@ -64,7 +64,7 @@ public class GFIPMAuthorizationProvider {
                             logger.log(Level.FINEST, "GFIPMAuthorizationProvider::isServiceAuthorized::Got the following WSC entity :: " + wscId + " using public Certificate ::" + subjectX509Certificate.getSubjectDN().getName());
                         }
                         //Provide authorization decision for the WSC to execute method gov.niem.ws.sample.cvc.service.CommercialVehicleCollisionWebServiceImpl.getDocument
-                        if (tf.isWebServiceConsumer(wscId) && "gov.niem.ws.sample.cvc.service.CommercialVehicleCollisionWebServiceImpl.getDocument".equals(methodName)) {
+                        if (tf.isWebServiceConsumer(wscId) && "gov.niem.ws.sample.cvc.service.CommercialVehicleCollisionWebServiceImpl.getDocumentRequest".equals(methodName)) {
                             //In this example any WSC from the CTF is authorized to execute method: gov.niem.ws.sample.cvc.service.CommercialVehicleCollisionWebServiceImpl.getDocument
                             isAuthorized = true;
                         }
